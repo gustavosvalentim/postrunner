@@ -19,7 +19,7 @@ def parse_kwargs(kwargs):
 
 
 def parse_headers(header_obj):
-    return dict([ [ x['key'], x['value'] ] for x in header_obj ])
+    return dict([[x['key'], x['value']] for x in header_obj])
 
 
 def parse_body(body_obj):
@@ -37,13 +37,13 @@ def parse_body(body_obj):
             return [ is_json, body_raw ]
     
     if body_mode == 'urlencoded':
-        body.update(dict([ [ x['key'], x['value'] ] for x in body_obj['urlencoded'] ]))
+        body.update(dict([[x['key'], x['value']] for x in body_obj['urlencoded']]))
 
     return [ is_json, body ]
 
 
 def parse_scripts(scripts_obj):
-    scripts = dict(before = [], after = [])
+    scripts = dict(before=[], after=[])
     for s in scripts_obj:
         if s['listen'] == 'prerequest':
             scripts['before'] = s['script']['exec']

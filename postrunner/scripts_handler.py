@@ -35,14 +35,14 @@ def interpret_lines(lines):
     return r
 
 
-def parse_using_response(key_value_dict, jsonResponse):
+def parse_using_response(key_value_dict, json_response):
     d = {}
     for etype, evalue in key_value_dict.items():
         d[etype] = {}
         for k, v in evalue.items():
             if v.startswith('jsonResponse'):
                 v = v.replace('jsonResponse.', '')
-                d[etype][k] = jsonResponse[v]
+                d[etype][k] = json_response[v]
             else:
                 d[etype][k] = v
     return d

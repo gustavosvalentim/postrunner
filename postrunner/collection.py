@@ -7,7 +7,7 @@ class Collection:
 	info = dict()
 	__requests = list()
 
-	def __init__(self, collection_as_string):
+	def __init__(self, collection_as_string, cert=None, verify=True):
 		collection_obj = json.loads(collection_as_string)
 		self.__load(collection_obj)
 
