@@ -1,3 +1,5 @@
+from json import JSONDecodeError
+
 import requests
 
 from postrunner.scripts_handler import interpret_lines, parse_using_response
@@ -66,6 +68,12 @@ class Request:
             verify=self.__verify_certificate
         )
 
-        self.__after(response.json())
+        response_content = None
+        try:
+            response_content = response.json()
+            self.__after(response_content) 
 
-        return response.content.decode('utf-8')
+        except JSONDecodeError:
+            response_content = response.content.decode('utf-8')
+
+        return response_content
