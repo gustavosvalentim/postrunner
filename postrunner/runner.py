@@ -1,3 +1,5 @@
+import logging
+
 from postrunner.environment import environment
 
 
@@ -9,14 +11,19 @@ class Runner:
         self.__collections.append(collection_ins)
 
     def run(self, **env):
+        logger = logging.getLogger()
+        logger.setLevel(logging.INFO)
+
         environment.update(env)
-        requests = [col.get_requests() for col in self.__collections]
-        result = {}
-        for col_req_list in requests:
-            for req in col_req_list:
-                result[req.name] = req.run()
-        
-        return result
+        requests = dict([[col.info['name'], col.get_requests()] for col in self.__collections])
+        for col_name, col_requests in requests.items():
+            self.__response_storage[col_name] = dict([[req.name, req.run()] for req in col_requests])
+
+    def __getattr__(self, attr):
+        if attr not in self.__response_storage:
+            raise AttributeError('Collection %s not found' % attr)
+
+        return self.__response_storage[attr]
 
 
 class RunnerFactory:
